@@ -641,49 +641,37 @@ internal class PluginImageCache : IInternalDisposableService
 
     private string? GetPluginIconUrl(IPluginManifest manifest, bool isThirdParty, bool isTesting)
     {
-        //if (isThirdParty)
-        //    return manifest.IconUrl;
+        if (isThirdParty)
+            return manifest.IconUrl;
 
-        //var fools = Service<Fools24>.Get();
-        //if (Fools24.IsDayApplicable())
-        //{
-        //    var iconLink = fools.GetHorseIconLink(manifest.InternalName);
-        //    if (iconLink != null)
-        //        return iconLink;
-        //}
+        var fools = Service<Fools24>.Get();
+        if (Fools24.IsDayApplicable())
+        {
+            var iconLink = fools.GetHorseIconLink(manifest.InternalName);
+            if (iconLink != null)
+                return iconLink;
+        }
 
-        //return MainRepoDip17ImageUrl.Format(manifest.Dip17Channel!, manifest.InternalName, "icon.png");
-
-        // 당장은 Dip17을 구현하지 못했으므로 manifest의 경로를 사용
-        return manifest.IconUrl;
+        return MainRepoDip17ImageUrl.Format(manifest.Dip17Channel!, manifest.InternalName, "icon.png");
     }
 
     private List<string?>? GetPluginImageUrls(IPluginManifest manifest, bool isThirdParty, bool isTesting)
     {
-        //if (isThirdParty)
-        //{
-        //    if (manifest.ImageUrls?.Count > 5)
-        //    {
-        //        Log.Warning($"Plugin {manifest.InternalName} has too many images");
-        //        return manifest.ImageUrls.Take(5).ToList();
-        //    }
-
-        //    return manifest.ImageUrls;
-        //}
-
-        //var output = new List<string>();
-        //for (var i = 1; i <= 5; i++)
-        //{
-        //    output.Add(MainRepoDip17ImageUrl.Format(manifest.Dip17Channel!, manifest.InternalName, $"image{i}.png"));
-        //}
-
-        //return output;
-
-        // 상기와 동일
-        if (manifest.ImageUrls?.Count > 5)
+        if (isThirdParty)
         {
-            Log.Warning($"Plugin {manifest.InternalName} has too many images");
-            return manifest.ImageUrls.Take(5).ToList();
+            if (manifest.ImageUrls?.Count > 5)
+            {
+                Log.Warning($"Plugin {manifest.InternalName} has too many images");
+                return manifest.ImageUrls.Take(5).ToList();
+            }
+
+            return manifest.ImageUrls;
+        }
+
+        var output = new List<string>();
+        for (var i = 1; i <= 5; i++)
+        {
+            output.Add(MainRepoDip17ImageUrl.Format(manifest.Dip17Channel!, manifest.InternalName, $"image{i}.png"));
         }
 
         return manifest.ImageUrls;

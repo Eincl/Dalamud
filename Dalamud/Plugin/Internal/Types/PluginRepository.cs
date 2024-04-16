@@ -26,7 +26,7 @@ internal class PluginRepository
     /// <summary>
     /// The URL of the official main repository.
     /// </summary>
-    public const string MainRepoUrl = "https://raw.githubusercontent.com/dohwacorp/DalamudPlugins/main/pluginmaster.json";
+    public const string MainRepoUrl = "https://xlweb.xivpf.xyz/Plugin/PluginMaster";
 
     private const int HttpRequestTimeoutSeconds = 20;
 
